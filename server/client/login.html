@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <form>
+      <div>
+        <span>用户名称</span>
+        <input name="username" />
+      </div>
+      <div>
+        <span>密码</span>
+        <input name="password" />
+      </div>
+    </form>
+    <button onclick="handleClick()">登录</button>
+    <script>
+      const username = document.querySelector('[name=username]')
+      const password = document.querySelector('[name=password]')
+
+      function handleClick() {
+        const u_value = username.value
+        const p_value = password.value
+        if (!u_value.length || !p_value.length) {
+          alert('表单字段不能为空!')
+          return
+        }
+        loginAPI(u_value, p_value)
+      }
+
+      function loginAPI(username, password) {
+        const xhr = new XMLHttpRequest()
+        xhr.open('get', `/api/login?username=${username}&password=${password}`)
+        xhr.send()
+        xhr.onload = (response) => {
+          const result = JSON.parse(response.target.response)
+          if (result.code === 200) {
+            console.log('登录成功')
+            location.pathname = '/'
+          } else {
+            alert(result.msg)
+          }
+        }
+      }
+    </script>
+  </body>
+</html>
